@@ -27,15 +27,15 @@ if [ -z "${ROS_ID}" ]; then
     xhost +
     nvidia-docker run -it --privileged --network=host -v /dev:/dev -v ${HOST_DATA_DIR}:${CONTAINER_DATA_DIR}:rw -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix${DISPLAY} -p 14556:14556/udp --name=${ROS_NAME} px4-ros:kinetic-v1 bash
 else
-    echo "Found redtail container: ${NCSDK_ID}."
+    echo "Found redtail container: ${ROS_ID}."
     # Check if the container is already running and start if necessary.
-    if [ -z `docker ps -qf "name=^/${NCSDK_NAME}$"` ]; then
-        xhost +local:${NCSDK_ID}
-        echo "Starting and attaching to ${NCSDK_NAME} container..."
-        docker start ${NCSDK_ID}
-        docker attach ${NCSDK_ID}
+    if [ -z `docker ps -qf "name=^/${ROS_NAME}$"` ]; then
+        xhost +local:${ROS_ID}
+        echo "Starting and attaching to ${ROS_NAME} container..."
+        docker start ${ROS_ID}
+        docker attach ${ROS_ID}
     else
-        echo "Found running ${NCSDK_NAME} container, attaching bash..."
-        docker exec -it ${NCSDK_ID} bash
+        echo "Found running ${ROS_NAME} container, attaching bash..."
+        docker exec -it ${ROS_ID} bash
     fi
 fi
